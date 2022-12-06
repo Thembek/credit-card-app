@@ -456,9 +456,52 @@ class _CardSliderState extends State<CardSlider> {
         if(cardInfo.scale < 0.8) cardInfo.scale = 0.8;
         if(cardInfo.scale > 1) cardInfo.scale = 1.0;
 
+        cardInfo.rotate = -90.0 / 5 * (positionY_line1 - cardInfo.positionY);
 
+        if(cardInfo.rotate > 0.0) cardInfo.rotate = 0.0; 
+        if(cardInfo.rotate < -90.0) cardInfo.rotate = -90.0;
+
+        cardInfo.opacity = 1.0 - 0.7 / 5 * (positionY_line1 - cardInfo.positionY);
+
+        if(cardInfo.opacity < 0.0) cardInfo.opacity = 0.0;
+        if(cardInfo.opacity > 1) cardInfo.opacity = 1.0;
+      } else if (currentCardAreaIdx >= 0 && currentCardAreaIdx < 1) {
+        cardInfo.scale = 1.0 - 0.1 / (positionY_line2 - positionY_line1) * (cardInfo.positionY - positionY_line1);
+
+        if(cardInfo.scale < 0.9) cardInfo.scale = 0.9;
+        if(cardInfo.scale > 1) cardInfo.scale = 1.0;
+
+        cardInfo.positionY = positionY_line1 + currentCardAreaIdx * _middleAreaHeight;
+        cardInfo.rotate = -60.0 / (positionY_line2 - positionY_line1) * (cardInfo.positionY - positionY_line1);
+        
+        if(cardInfo.rotate > 0.0) cardInfo.rotate = 0.0;
+        if(cardInfo.rotate < -60.0) cardInfo.rotate = -60.0;
+
+        cardInfo.opacity = 1.0 - 0.3 / (positionY_line2 - positionY_line1) * (cardInfo.positionY - positionY_line1);
+        
+        if(cardInfo.opacity < 0.0) cardInfo.opacity = 0.0;
+        if(cardInfo.opacity > 1) cardInfo.opacity = 1.0;
+      } else if(currentCardAreaIdx >= 1) {
+        cardInfo.positionY = positionY_line2 + (currentCardAreaIdx -1) * _outsiteCardInterval;
+        
+        cardInfo.rotate = -60.0;
+        cardInfo.scale = 0.9;
+        cardInfo.opacity = 0.7;
       }
     }
+
+    double firstCardAreaIdx = scrollOffsetY / _middleAreaHeight;
+    print(firstCardAreaIdx);
+    
+    for(int i = 0; i <_cardInfoList.length; i++) {
+      CardInfo cardInfo = _cardInfoList[_cardInfoList.length - 1 - i];
+      updatePosition(cardInfo, firstCardAreaIdx, i);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector()
   }
 }
 
