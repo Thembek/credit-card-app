@@ -501,7 +501,122 @@ class _CardSliderState extends State<CardSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector()
+    return GestureDetector(
+      onVerticalDragUpdate: (DragUpdateDetails d) {
+        _updateCardPosition(d.delta.dy);
+      },
+      onVerticalDragEnd: (DragEndDetails d) {
+        scrollOffsetY = (scrollOffsetY / _middleAreaHeight).round() * _middleAreaHeight;
+        _updateCardPosition(0);
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: Color(0xFF0B268A).withOpacity(.1),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(100)),
+        ),
+        child: Stack(
+          alignment: Alignment.topCenter, 
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Text(
+                  "YOUR SECURE CARD",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 18, 71, 162),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+
+            ..._cardBuild(),
+
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 240,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color.fromARGB(0, 255, 255, 255),
+                      Color.fromARGB(255, 255, 255, 255),
+                    ]
+                  ),
+                ),
+              ),
+            ),
+
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () {},
+                      child: Icon(
+                        Icons.keyboard,
+                        color: Colors.grey,
+                        size: 35,
+                      ),
+                      backgroundColor: Colors.white,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        widget.confirm(true);
+                        print("tab");
+                      },
+                      child: Container(
+                        height: 60,
+                        width: 200,
+                        decoration: ShapeDecoration(
+                          shadows: [
+                            BoxShadow(
+                              color: Color(0xFF0B258A).withOpacity(.5),
+                              blurRadius: 10,
+                              offset: Offset(0, 10),
+                            ),
+                          ],
+                          shape: StadiumBorder(),
+                          color: Color(0xFF0B258A),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Confirm \$5400",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    FloatingActionButton(
+                      onPressed: () {},
+                      child: Icon(
+                          Icons.mic,
+                          color: Colors.grey,
+                          size: 35,
+                        ),
+                        backgroundColor: Colors.white,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
